@@ -18,8 +18,8 @@ void beep(int pik);
 #define period_oprosa_klavi 5 // опрос клавы в миллисекундах 5*20=100 мсек
 #define delay_miganie 45	  // задержка мигания цифры
 #define delay_led -1
-#define max_napr_acp 2.048   // 1.25
-#define max_napr_vhod 5.0
+#define max_napr_acp 1.25//2.048   // 1.25
+#define max_napr_vhod 9.999//5.0
 #define kof_ves 5.0	// в тоннах
 #define max_dac 1.82
 #define min_dac 0.0 
@@ -27,7 +27,8 @@ void beep(int pik);
 #define DEBUG  0
 
 
-const float xdata ves_raz=0.00000012207031977595804786432074691777;//0.000000076293954407448101931584111640943;
+const float xdata ves_raz=0.000000076293954407448101931584111640943;//0.000000195312511641533000000000 ;
+//0.00000012207031977595804786432074691777;//0.000000076293954407448101931584111640943;
 const float xdata ves_raz_dac=0.00061050061050061050061050061050061;
 long xdata dac_peremen=0;
 volatile long data adc_data=0;	 // для накапления показаний ацп
@@ -576,7 +577,6 @@ if(miganie<delay_miganie)
             // case 4: P0_4=0;
             //         break;
             }
-		delay(1);
 	      a=P1;
 		  a=a>>sel;
 		  if(CY==0)
@@ -632,7 +632,6 @@ i=0;
    //case 4: P0_4=0;
    //        break;
    }
-   delay(1);
    a=P1;
    for(knop=0;knop<2;knop++)
      {
@@ -1058,7 +1057,7 @@ CLK=0;
 // КОНФИГ АЦП
 ADC0CON1=0x27;	   // 1.28
 //ADC0CON2=0x44;	  //  AIN5 -> AINCOM	   опора 1.25
-ADC0CON2=0x4;	  //  AIN5 -> AINCOM	   опора 1.25
+ADC0CON2=0x4;//внутренняя опора
 SF=0x16;	  // 186.18 Hz
 ADCMODE=0x2B;
 
@@ -1157,7 +1156,7 @@ else
 
  while(1)
  {
-
+//----------------------------------------------------------------------------------------------
   if(adc_gotov==kol_izmer_data)  // усреднение и проход через фильтр показания датчика
       {
 	    adc_datchik=adc_data/kol_izmer_data;
@@ -1181,8 +1180,8 @@ else
 		
 	  }
    
-
-   if(pokazanie_napryajeniya>=5)
+ //----------------------------------------------------------------------------------------------
+   if(pokazanie_napryajeniya>=max_napr_vhod)
    {
 	  if(pisk_pregruz_vvremya==0)
 	    beep(50);
@@ -1191,7 +1190,7 @@ else
    }
    else
      pisk_pregruz_vvremya=120;
-
+ //----------------------------------------------------------------------------------------------
    pokazanie_datchika_mgnovennoe=((float)adc_datchik*ves_raz)*koef_usl; // мгновенное значение
 
    ves_srednee=((interval-(verhniy_pridel-pokazanie_datchika_srednee))*koef_usileniya_ves);	 // вес среднее в тоннах
@@ -1223,7 +1222,7 @@ else
    if(moment_srednee >= 99.99 || moment_mgnovennoe >= 99.99)
      moment_srednee=moment_mgnovennoe=99.99;
 
-	
+//----------------------------------------------------------------------------------------------	
 
    green_led=(moment_srednee/ves_dioda);	// рассчёт количество выводимых диодов зелённого цвета
    orange_led=(moment_mgnovennoe/ves_dioda); // рассчёт количество выводимых диодов оранжевого цвета
@@ -1267,11 +1266,11 @@ else
          str_led[(i)/4]+=massiv_znacheniy_cvetov[led[(i)/4].cvet[i%4]+((i%4)*4)];
 
        }
- 
+ //----------------------------------------------------------------------------------------------
    if(out_port==1)
    {
     
-
+ //----------------------------------------------------------------------------------------------
     switch(klava)
 	   {
 	    case 24:
@@ -1576,7 +1575,7 @@ else
 	
 	out_port=0;
   }
-
+ //----------------------------------------------------------------------------------------------
  if(restart_led_dec_indikator>197)
  {
    LED_OUT_LINE(NULL,1,"\x09\x00"); // инициализация decode-off
@@ -1612,7 +1611,7 @@ else
 
    restart_led_dec_indikator=0;
  } 
-
+ //----------------------------------------------------------------------------------------------
  Indikatornaya_panel(rejim,mashtab); 
 
  if(rejim==1)  // измерение момента
@@ -1633,12 +1632,19 @@ else
   }
   LED_OUT_LINE(str_led,0,NULL);  // вывод на шкальный индикатор
  }
-
+//----------------------------------------------------------------------------------------------
  if(rejim==2) // отображение напряжения
  {
   if(vivod_dec&&chastota_vivoda_na_indikator>85)
   {
     tmp_pokazanie_datchika_srednee=pokazanie_napryajeniya;
+//------------------------
+	if(pokazanie_napryajeniya>=max_napr_vhod)
+	{
+		pokazanie_napryajeniya=max_napr_vhod;
+	}
+//------------------------
+
     pokazanie_napryajeniya*=10000.0;
     pokazanie_napryajeniya=float_ceil_floor(pokazanie_napryajeniya);
     pokazanie_napryajeniya/=10000.0;
@@ -1652,7 +1658,7 @@ else
   }
   LED_OUT_LINE(str_led,0,NULL); 
  }
-
+//----------------------------------------------------------------------------------------------
  if(rejim==3) // задание уставки
  {
   if(vhod_v_edit)
@@ -1676,7 +1682,7 @@ else
 	LED_OUT_LINE(str_led,0,NULL);  // вывод на шкальный индикатор
 
  }
-
+//----------------------------------------------------------------------------------------------
  if(rejim==4) // ввод тарировочного коэффициента
  {
   if(vhod_v_edit)
