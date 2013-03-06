@@ -576,7 +576,6 @@ if(miganie<delay_miganie)
             // case 4: P0_4=0;
             //         break;
             }
-		delay(1);
 	      a=P1;
 		  a=a>>sel;
 		  if(CY==0)
@@ -632,7 +631,6 @@ i=0;
    //case 4: P0_4=0;
    //        break;
    }
-   delay(1);
    a=P1;
    for(knop=0;knop<2;knop++)
      {
@@ -1057,8 +1055,7 @@ CS_INDIK=1;
 CLK=0;
 // КОНФИГ АЦП
 ADC0CON1=0x27;	   // 1.28
-//ADC0CON2=0x44;	  //  AIN5 -> AINCOM	   опора 1.25
-ADC0CON2=0x4;	  //  AIN5 -> AINCOM	   опора 1.25
+ADC0CON2=0x44;	  //  AIN5 -> AINCOM	   опора 1.25
 SF=0x16;	  // 186.18 Hz
 ADCMODE=0x2B;
 
