@@ -162,7 +162,9 @@ unsigned char bit_count=0;
 	        //delay(delay_led);
            }
         }
-	   CS_LED=1;
+		CS_LED=1;
+		delay(1);
+		CS_LED=0;
        tmp_kol++;
 	 }
    
@@ -188,7 +190,9 @@ unsigned char bit_count=0;
          }
 	    delay(delay_led);	 
        }
-     CS_LED=1;
+		CS_LED=1;
+		delay(1);
+		CS_LED=0;
    }
 }
 //------------------------------
@@ -247,6 +251,9 @@ for(kol_pered=4;kol_pered>0;kol_pered--)  // выводим пять знакомест
      }
    }
 CS_DEC=1;
+delay(1);
+CS_DEC=0;
+
 kol--;	 
   }
 }
@@ -272,6 +279,8 @@ for(kol_byt=0;kol_byt<2;kol_byt++)  // включение питания
 	 delay(delay_led);	 
    }
 CS_DEC=1;
+delay(1);
+CS_DEC=0;
 }
 }
 //-------------------------------------
@@ -317,6 +326,8 @@ for(kol_pered=6;kol_pered>0;kol_pered--)  // выводим пять знакомест
      }
    }
 CS_INDIK=1;
+delay(1);
+CS_INDIK=0;
 kol--;	 
   }
 }
@@ -342,6 +353,8 @@ for(kol_byt=0;kol_byt<2;kol_byt++)  // включение питания
 	 delay(delay_led);	 
    }
 CS_INDIK=1;
+delay(1);
+CS_INDIK=0;
 }
 }
 //-------------------------------------
@@ -1050,9 +1063,10 @@ struct Led xdata led[8];  // всего 32 диода
 PLLCON=0x02;
 P3_5=0;
 
-CS_DEC=1;	 // выбор кристала
-CS_LED=1;
-CS_INDIK=1; 
+CS_DEC=0;	 // выбор кристала
+CS_LED=0;
+CS_INDIK=0; 
+
 CLK=0;
 // КОНФИГ АЦП
 ADC0CON1=0x27;	   // 1.28

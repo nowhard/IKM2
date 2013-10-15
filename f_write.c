@@ -11,6 +11,7 @@ unsigned long flash_write (
 const unsigned char *s = buffer;
 unsigned long i;
 unsigned int addr;
+unsigned char EA_temp=0;
 
 /*-------------------------------------
 If the address is too big, exit.
@@ -22,6 +23,9 @@ if (address >= ADI_EEMEM_SIZE)
 Otherwise, read the starting page.
 --------------------------------------*/
 addr = (unsigned int) address;
+
+EA_temp=EA;
+EA=0;
 
 EADRL = addr >> 2;
 ECON = ADI_EE_READ_PAGE;
@@ -63,7 +67,7 @@ if ((addr & 0x03) != 0)
   ECON = ADI_EE_ERASE_PAGE;
   ECON = ADI_EE_WRITE_PAGE;
   }
-
+EA=EA_temp;
 return (i);
 }
 

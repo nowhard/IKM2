@@ -12,6 +12,7 @@ unsigned long flash_read (
 unsigned char *s = buffer;
 unsigned long i;
 unsigned int addr;
+unsigned char EA_temp=0;
 
 /*-------------------------------------
 If the address is too big, exit.
@@ -23,6 +24,9 @@ if (address >= ADI_EEMEM_SIZE)
 Otherwise, read the starting page.
 --------------------------------------*/
 addr = (unsigned int) address;
+
+EA_temp=EA;
+EA=0;
 
 EADRL = addr >> 2;
 ECON = ADI_EE_READ_PAGE;
@@ -51,7 +55,7 @@ Read the appropriate EE byte.
     ECON = ADI_EE_READ_PAGE;
     }
   }
-
+EA=EA_temp;
 return (i);
 }
 
