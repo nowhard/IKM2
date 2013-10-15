@@ -5,7 +5,7 @@
 #include <math.h>
 #include <intrins.h>
 #include "flash.h"
-
+#include "adc.h"
 
 #define Adress_ustroistva 0x01
 #define Nomer_ustroistva 0x01
@@ -27,11 +27,12 @@ void beep(int pik);
 #define DEBUG  0
 
 
+
 const float xdata ves_raz=0.000000076293954407448101931584111640943;//0.000000195312511641533000000000 ;
 //0.00000012207031977595804786432074691777;//0.000000076293954407448101931584111640943;
 const float xdata ves_raz_dac=0.00061050061050061050061050061050061;
 long xdata dac_peremen=0;
-volatile long data adc_data=0;	 // для накапления показаний ацп
+volatile long data adc_data=0;	 // для накопления показаний ацп
 volatile long data adc_datchik=0;  // показания ацп усреднённое
 volatile long adc=0;	   // значение ацп
 unsigned char adc_gotov=0;
@@ -1069,11 +1070,11 @@ CS_INDIK=0;
 
 CLK=0;
 // КОНФИГ АЦП
-ADC0CON1=0x27;	   // 1.28
+ADC0CON1=(ADC_UNIPOLAR|RN_2560);//0x27;	   // 1.28
 //ADC0CON2=0x44;	  //  AIN5 -> AINCOM	   опора 1.25
-ADC0CON2=0x4;//внутренняя опора
+ADC0CON2=(INTERN_REF|AIN5_AINCOM);//0x4;//внутренняя опора
 SF=0x16;	  // 186.18 Hz
-ADCMODE=0x2B;
+ADCMODE=(ADC_CONTIN_CONV|ADC_ENABLE|ADC_CHOP_DISABLE);//0x2B;
 
 #if DEBUG==1
 SCON=0x52;	  // Режим 1 - 8 бит, прием запрещен
