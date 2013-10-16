@@ -1076,6 +1076,13 @@ ADC0CON2=(INTERN_REF|AIN5_AINCOM);//0x4;//внутренн€€ опора
 SF=0x16;	  // 186.18 Hz
 ADCMODE=(ADC_CONTIN_CONV|ADC_ENABLE|ADC_CHOP_DISABLE);//0x2B;
 
+
+//ADC0CON1=0x27;
+//ADC0CON2=0x04;
+//SF=0x16;
+//ADCMODE=0x2B;
+
+
 #if DEBUG==1
 SCON=0x52;	  // –ежим 1 - 8 бит, прием запрещен
 T3CON=0x80;	//UART = 115200 Baud rate

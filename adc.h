@@ -51,7 +51,7 @@
 #define ADC_UNIPOLAR		0x20//унипол€рный режим
 #define ADC_BIPOLAR			0x0//бипол€рный режим
 //-----------------------------------------------------------
-#define ADC_CHOP_DISABLE	0x10
+#define ADC_CHOP_DISABLE	0x8
 #define ADC_ENABLE			0x20			
 //---------------------
 #endif
